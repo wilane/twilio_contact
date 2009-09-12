@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Small Django app to contact me using twilio.com</h1>
+
+<table border="1">
+  <tr>
+    <td>
+      <p align="justify">Hi, To contact me please enter your name, phone number, email address and the
+	motive of your call. Once you hit enter, you'll be redirected to a status page
+	that shows you all the process that are actually hapenning with
+	application/process errors if any. Here are the steps that are run in the
+	background:
+      </p>
+
+      <ul>
+	<li>You'll be called and greeted by your name reminding you why you're contacting me</li>
+	<li>You'll be asked if you want to proceed</li>
+	<ul> If yes
+	  <li>I call my self and screen your name and motive asking to get connected
+	    or let you leave a message</li>
+	  <ul> If proceed
+	    <li>I'll connect the 2 legs</li>
+	  </ul>
+	  <ul>If don't proceed or no answer
+	    <li>Let you record a message</li>
+	    <li>Transcribe the message and send it both to you and me with url of the recording</li>
+	  </ul>
+	</ul>
+	
+	<ul> If No
+	  <li>You'll get a buy and Hangup</li>
+	  <li>I'll egt an email letting me know</li>
+	</ul>
+      </ul>
+    </td>
+    <td valign="top">
+      <form method="POST">
+	<table>
+	  {{ form }}
+	</table>
+	<input type="submit" name="Go" value="Go">
+      </form>
+    </td>
+  </tr>
+</table>
+{% endblock %}
+

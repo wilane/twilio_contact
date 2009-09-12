@@ -1,0 +1,18 @@
+This is a Django project with an app called contact. It's easy to
+deploy like any Django project.
+
+The application use some config params that you can put in settings.py
+or in a file local_settings.py:
+
+API_VERSION = '2008-08-01'
+ACCOUNT_SID = ''
+ACCOUNT_TOKEN = ''
+
+CALLER_ID = ''
+
+MY_EMAIL = ''
+MY_NUMBER = ''
+BASE_URL = ''
+
+If you don't define them the app zill crash on you, not much checking
+is done, it's more a quick'n'dirty poc of the power of Twilio.
