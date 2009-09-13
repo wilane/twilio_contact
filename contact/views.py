@@ -60,7 +60,8 @@ def index(request):
             d = {
                 'Caller' : settings.CALLER_ID,
                 'Called' : ctc.phone,
-                'Url' : '%s/call/%s' % (settings.BASE_URL, ctc.pk)
+                'Url' : '%s/call/%s' % (settings.BASE_URL, ctc.pk),
+                'IfMachine' : 'Continue', 
                 }
             response = account.request('/%s/Accounts/%s/Calls' %(settings.API_VERSION, settings.ACCOUNT_SID), 'POST', d)
             
@@ -75,6 +76,7 @@ def index(request):
 def call(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
     digits = request.REQUEST.get('Digits', None)
+    dialstatus = request.REQUEST.get('DialStatus', None)    
     if digits:
         if digits == '1':
             r = twilio.Response()
@@ -88,17 +90,24 @@ def call(request, contact_id):
             # send Hangup and notice to me
             r = twilio.Response()
             r.addHangup()
-            return HttpResponse(r,mimetype="application/xml")            
-    r = twilio.Response()
-    message ="Hello %s. You've requested to contact me with the following motives: %s" % (ctc.name, ctc.motive)
-    prompt = "Please press 1 if you're willing to proceed or 2 if you want to cancel. Note that in both cases, I'll receive a notice."
+            return HttpResponse(r,mimetype="application/xml")
+        
+    if dialstatus and dialstatus == 'answered-human': # (answered-human, answered-machine, hangup-machine, busy, no-answer, fail)
+        r = twilio.Response()
+        message ="Hello %s. You've requested to contact me with the following motives: %s" % (ctc.name, ctc.motive)
+        prompt = "Please press 1 if you're willing to proceed or 2 if you want to cancel. Note that in both cases, I'll receive a notice."
 
-    r.addSay(message, voice=twilio.Say.MAN,
-              language=twilio.Say.ENGLISH)
-    g = r.append(twilio.Gather(numDigits=1))
-    g.append(twilio.Say(prompt, voice=twilio.Say.MAN,
-              language=twilio.Say.ENGLISH))
-    return HttpResponse(r,mimetype="application/xml")
+        r.addSay(message, voice=twilio.Say.MAN,
+                 language=twilio.Say.ENGLISH)
+        g = r.append(twilio.Gather(numDigits=1))
+        g.append(twilio.Say(prompt, voice=twilio.Say.MAN,
+                            language=twilio.Say.ENGLISH))
+        return HttpResponse(r,mimetype="application/xml")
+    else:
+        # Let the user know on the status page
+        loggin.debug('Dialing %s failed with status: %s' %(ctc.phone, dialstatus))
+        # Just do this to avoid 500 for not returning an HttpResponse
+        return HttpResponse("")
 
 def bridge(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
