@@ -16,6 +16,12 @@ someone from the web to contact you without knowing your phone number.
    transcribed and sent to you and to the user with an url that points to the
    audio of the voicemail.
 
+TEST
+====
+If you want to test this without you can point your browser ro
+http://twiliocontact.wilane.net, if you've a US phone number (shame on you if
+you don have any:)
+
 INSTALL
 =======
 This is a Django project with an app called contact. It's easy to deploy like
