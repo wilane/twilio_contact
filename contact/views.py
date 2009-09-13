@@ -58,7 +58,7 @@ def index(request):
             ctc.save()
             # Make the call
             d = {
-                'Caller' : CALLER_ID,
+                'Caller' : settings.CALLER_ID,
                 'Called' : ctc.phone,
                 'Url' : '%s/call/%s' % (settings.BASE_URL, ctc.pk)
                 }
