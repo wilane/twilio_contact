@@ -135,8 +135,8 @@ def vmme(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))    
     dialstatus = request.REQUEST.get('DialStatus', None)
     if ctc.vm or dialstatus != 'Completed':
-        message ="""Hello. Please leave me a voicemail after the beep, and remember to speak
-        clearly."""
+        message ="""It's seems that I'm unavailable, please leave me a voicemail after the beep, and remember to speak
+        clearly, in advance, thanks you for your interest."""
         r = twilio.Response()
         r.addSay(message, voice=twilio.Say.MAN,
                  language=twilio.Say.ENGLISH)
