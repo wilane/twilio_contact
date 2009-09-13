@@ -1,0 +1,3 @@
+ * Update the status page in realtime
+ * Handle various call failures
+ * Cleanup a lot, this is very very dirty code, an example of bad code
