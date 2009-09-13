@@ -1,8 +1,32 @@
-This is a Django project with an app called contact. It's easy to
-deploy like any Django project.
+WHAT'S THIS
+===========
 
-The application use some config params that you can put in settings.py
-or in a file local_settings.py:
+This is to demonstrate the usage of the Twilio API. This application allows
+someone from the web to contact you without knowing your phone number.
+
+ * A user surf your site, fill a form with providing name, phone number and
+   motives of the call.
+ * The application will use Twilio API to call the user (US number only) and
+   reminds the user that he wants to call you and the motives at which point you
+   can press 1 to proceed or 2 to cancel the call
+ * If the user wants to proceed, the application will call you letting you know
+   that the user wants to talk to you.
+ * If you press 1 to accept the call then you're connected to the user.
+ * If you press 2 the user is asked to leave you a message and the message is
+   transcribed and sent to you and to the user with an url that points to the
+   audio of the voicemail.
+
+INSTALL
+=======
+This is a Django project with an app called contact. It's easy to deploy like
+any Django project.
+
+CONFIGURATION
+=============
+
+If you don't alreaydy have a Twilio account, create one at http://twilio.com.
+The application use some config params that you can put in settings.py or in a
+file local_settings.py:
 
 API_VERSION = '2008-08-01'
 ACCOUNT_SID = ''
