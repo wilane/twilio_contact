@@ -172,7 +172,7 @@ Recording URL: %s""" %(request.REQUEST.get('TranscriptionText', None), request.R
         ctc.save()
         
     send_mail(subject, message, 'settings.MY_EMAIL',
-                  [ctc.email, 'settings.MY_EMAIL'], fail_silently=False)
+                  [ctc.email, settings.MY_EMAIL], fail_silently=False)
 
     return HttpResponse("")
 
@@ -199,7 +199,7 @@ def setNotifications(ctc):
 
 def update(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
-    #setSegmentStats(ctc)
+    setSegmentStats(ctc)
     response = HttpResponse(mimetype="text/javascript")
     if not ctc.completed():
         qs = ctc.leg_set.none() # or from django.db.models.query import EmptyQuerySet
