@@ -105,7 +105,7 @@ def call(request, contact_id):
         return HttpResponse(r,mimetype="application/xml")
     else:
         # Let the user know on the status page
-        loggin.debug('Dialing %s failed with status: %s' %(ctc.phone, dialstatus))
+        logging.debug('Dialing %s failed with status: %s' %(ctc.phone, dialstatus))
         # Just do this to avoid 500 for not returning an HttpResponse
         return HttpResponse("")
 
