@@ -83,6 +83,7 @@ def call(request, contact_id):
                         url='%s/bridge/%s' %(settings.BASE_URL, ctc.pk))
             logging.debug("Calling you now with request: %s" %(r,))
             return HttpResponse(r,mimetype="application/xml")
+        
         else: # No input or cancel
             # send Hangup and notice to me
             r = twilio.Response()
@@ -135,7 +136,7 @@ def bridge(request, contact_id):
 def vmme(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))    
     dialstatus = request.REQUEST.get('DialStatus', None)
-    if ctc.vm or dialstatus != 'Completed':
+    if ctc.vm: # or dialstatus != 'Completed'
         message ="""It's seems that I'm unavailable, please leave me a voicemail after the beep, and remember to speak
         clearly, in advance, thanks you for your interest."""
         r = twilio.Response()
