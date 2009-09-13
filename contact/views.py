@@ -107,7 +107,9 @@ def call(request, contact_id):
         # Let the user know on the status page
         logging.debug('Dialing %s failed with status: %s' %(ctc.phone, dialstatus))
         # Just do this to avoid 500 for not returning an HttpResponse
-        return HttpResponse("")
+        r = twilio.Response()
+        r.addHangup()
+        return HttpResponse(r,mimetype="application/xml")
 
 def bridge(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
