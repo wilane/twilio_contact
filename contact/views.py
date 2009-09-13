@@ -102,6 +102,7 @@ def call(request, contact_id):
 def bridge(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
 
+    logging.debug(request.REQUEST)
     digits = request.REQUEST.get('Digits', None)
     if digits:
         if digits == '1':
@@ -171,7 +172,7 @@ Recording URL: %s""" %(request.REQUEST.get('TranscriptionText', None), request.R
         ctc.voicemail = request.REQUEST.get('RecordingUrl', None)
         ctc.save()
         
-    send_mail(subject, message, 'settings.MY_EMAIL',
+    send_mail(subject, message, settings.MY_EMAIL,
                   [ctc.email, settings.MY_EMAIL], fail_silently=False)
 
     return HttpResponse("")
