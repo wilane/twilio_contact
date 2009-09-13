@@ -92,7 +92,7 @@ def call(request, contact_id):
             r.addHangup()
             return HttpResponse(r,mimetype="application/xml")
         
-    if dialstatus and dialstatus == 'answered-human': # (answered-human, answered-machine, hangup-machine, busy, no-answer, fail)
+    if dialstatus and dialstatus.startswith('answered'): # (answered-human, answered-machine, hangup-machine, busy, no-answer, fail)
         r = twilio.Response()
         message ="Hello %s. You've requested to contact me with the following motives: %s" % (ctc.name, ctc.motive)
         prompt = "Please press 1 if you're willing to proceed or 2 if you want to cancel. Note that in both cases, I'll receive a notice."
