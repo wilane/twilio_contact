@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 _dir = dirname(__file__)
 
 ADMINS = (
-     ('Ousmane Wilane', 'ousmane@wilane.org'),
+         # ('Your Name', 'your_email@domain.com'),
 )
 
 MANAGERS = ADMINS
