@@ -64,7 +64,7 @@ class contact(models.Model):
     Sid = models.CharField(max_length=64, editable=False, blank=True, null=True)
 
     def __unicode__(self):
-        return u"%s {<%s>, <%s>}" %(name, phone, email)
+        return u"%s {<%s>, <%s>}" %(self.name, self.phone, self.email)
 
     def completed(self):
         return all([(l.Status == "2") for l in self.leg_set.all()])
