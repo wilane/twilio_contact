@@ -102,7 +102,7 @@ def call(request, contact_id):
 def bridge(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))
 
-    logging.debug(request.REQUEST)
+    logging.debug(request.raw_post_data)
     digits = request.REQUEST.get('Digits', None)
     if digits:
         if digits == '1':
