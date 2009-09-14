@@ -61,7 +61,7 @@ def index(request):
                 'Caller' : settings.CALLER_ID,
                 'Called' : ctc.phone,
                 'Url' : '%s/call/%s' % (settings.BASE_URL, ctc.pk),
-                'IfMachine' : 'Continue', 
+                #'IfMachine' : 'Continue', 
                 }
             response = account.request('/%s/Accounts/%s/Calls' %(settings.API_VERSION, settings.ACCOUNT_SID), 'POST', d)
             
@@ -118,7 +118,8 @@ def bridge(request, contact_id):
     digits = request.REQUEST.get('Digits', None)
     if digits:
         if digits == '1':
-            ctc.vm = False            
+            ctc.vm = False
+            ctc.save()            
             r = twilio.Response()
             message ="""Connecting, please hold on."""
             
@@ -127,7 +128,6 @@ def bridge(request, contact_id):
             return HttpResponse(r,mimetype="application/xml") 
         
         else:
-            ctc.save()
             r = twilio.Response()
             r.addHangup()
             return HttpResponse(r,mimetype="application/xml")                
@@ -149,8 +149,7 @@ def vmme(request, contact_id):
     dialstatus = request.REQUEST.get('DialStatus', None)
     logging.debug('The dialstatus of the call to me is: %s' %dialstatus)
     if ctc.vm: # or not dialstatus.startswith('answered')
-        message ="""It's seems that I'm unavailable, please leave me a voicemail after the beep, and remember to speak
-        clearly, in advance, thanks you for your interest."""
+        message ="""It's seems that I'm unavailable, please leave me a voicemail after the beep, and remember to speak clearly, in advance, thanks you for your interest."""
         r = twilio.Response()
         r.addSay(message, voice=twilio.Say.MAN,
                  language=twilio.Say.ENGLISH)
