@@ -54,7 +54,7 @@ def index(request):
         form = ContactForm(request.REQUEST)
         if form.is_valid():
             ctc = form.save(commit=False)
-            ctc.vm = False
+            ctc.vm = True
             ctc.save()
             # Make the call
             d = {
@@ -118,15 +118,15 @@ def bridge(request, contact_id):
     digits = request.REQUEST.get('Digits', None)
     if digits:
         if digits == '1':
+            ctc.vm = False            
             r = twilio.Response()
-            message ="""Connecting."""
+            message ="""Connecting, please hold on."""
             
             r.addSay(message, voice=twilio.Say.MAN,
                      language=twilio.Say.ENGLISH)
             return HttpResponse(r,mimetype="application/xml") 
         
         else:
-            ctc.vm = True
             ctc.save()
             r = twilio.Response()
             r.addHangup()
@@ -148,7 +148,7 @@ def vmme(request, contact_id):
     ctc = contact.objects.get(pk=int(contact_id))    
     dialstatus = request.REQUEST.get('DialStatus', None)
     logging.debug('The dialstatus of the call to me is: %s' %dialstatus)
-    if ctc.vm or not dialstatus.startswith('answered'):
+    if ctc.vm: # or not dialstatus.startswith('answered')
         message ="""It's seems that I'm unavailable, please leave me a voicemail after the beep, and remember to speak
         clearly, in advance, thanks you for your interest."""
         r = twilio.Response()
