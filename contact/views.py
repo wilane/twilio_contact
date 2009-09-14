@@ -88,6 +88,17 @@ def call(request, contact_id):
         
         else: # No input or cancel
             # send Hangup and notice to me
+            subject = "Contact request canceled"
+            message = """%s
+You've canceled your request to contact me with the following motives: %s
+Thanks for your interest
+
+--
+Kind regards
+""" % (ctc.name, ctc.motive)
+            send_mail(subject, message, settings.MY_EMAIL,
+                      [ctc.email, settings.MY_EMAIL], fail_silently=False)
+            
             r = twilio.Response()
             r.addHangup()
             return HttpResponse(r,mimetype="application/xml")
@@ -178,8 +189,8 @@ def transcribe(request, contact_id):
         message = "You have new voicemail, URL: %s" %request.REQUEST.get('RecordingUrl', None)
     else:
         subject = 'New voicemail from %s' %(ctc,)
-        message = """%s
-Recording URL: %s""" %(request.REQUEST.get('TranscriptionText', None), request.REQUEST.get('RecordingUrl', None))
+        message = """The transcription of the voicemail is: %s
+The Recording URL: %s""" %(request.REQUEST.get('TranscriptionText', None), request.REQUEST.get('RecordingUrl', None))
         ctc.transcribe = request.REQUEST.get('TranscriptionText', None)
         ctc.voicemail = request.REQUEST.get('RecordingUrl', None)
         ctc.save()

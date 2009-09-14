@@ -57,7 +57,7 @@ class contact(models.Model):
     email = models.EmailField("Email")
     motive = models.TextField("Motive", help_text="What's the motive of your call?")
 
-    vm = models.BooleanField(default=False)
+    vm = models.BooleanField(default=False, editable=False)
     voicemail = models.URLField(blank=True, null=True, editable=False)
     transcribe = models.TextField(editable=False)
 
